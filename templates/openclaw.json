@@ -1,0 +1,99 @@
+{
+  "auth": {
+    "profiles": {
+      "anthropic:default": {
+        "provider": "anthropic",
+        "mode": "token"
+      },
+      "openai-codex:default": {
+        "provider": "openai-codex",
+        "mode": "oauth"
+      },
+      "ollama:local": {
+        "provider": "ollama",
+        "mode": "token"
+      }
+    }
+  },
+  "models": {
+    "providers": {
+      "ollama": {
+        "baseUrl": "http://localhost:11434",
+        "apiKey": "ollama-local",
+        "api": "ollama",
+        "models": [
+          {
+            "id": "YOUR_MODEL_HERE",
+            "name": "Local Model",
+            "cost": { "input": 0, "output": 0 },
+            "contextWindow": 32768,
+            "maxTokens": 32768
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "openai-codex/gpt-4o",
+        "fallbacks": [
+          "anthropic/claude-opus-4-6",
+          "ollama/YOUR_MODEL_HERE"
+        ]
+      },
+      "models": {
+        "anthropic/claude-opus-4-6": {},
+        "openai-codex/gpt-4o": {},
+        "ollama/YOUR_MODEL_HERE": {}
+      },
+      "workspace": "REPLACE_WITH_HOME/.openclaw/workspace",
+      "contextPruning": {
+        "mode": "cache-ttl",
+        "ttl": "1h"
+      },
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "heartbeat": {
+        "every": "1h"
+      }
+    }
+  },
+  "tools": {
+    "profile": "coding",
+    "elevated": { "enabled": false },
+    "exec": { "security": "allowlist", "ask": "on-miss" }
+  },
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto",
+    "restart": true
+  },
+  "session": {
+    "dmScope": "per-channel-peer"
+  },
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "dmPolicy": "pairing",
+      "botToken": "YOUR_BOT_TOKEN_HERE",
+      "groupPolicy": "allowlist",
+      "streaming": "partial"
+    }
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "lan",
+    "auth": {
+      "mode": "token",
+      "token": "GENERATE_A_RANDOM_TOKEN_HERE"
+    }
+  },
+  "plugins": {
+    "entries": {
+      "telegram": { "enabled": true }
+    }
+  }
+}

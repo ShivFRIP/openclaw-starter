@@ -1,0 +1,12 @@
+# Never commit real credentials
+*.env
+.env.*
+credentials/
+auth-profiles.real.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/

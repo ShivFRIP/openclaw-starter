@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "profiles": {
+    "anthropic:default": {
+      "type": "token",
+      "provider": "anthropic",
+      "token": "YOUR_ANTHROPIC_TOKEN_HERE"
+    },
+    "openai-codex:default": {
+      "type": "oauth",
+      "provider": "openai-codex",
+      "access": "FILLED_BY_OAUTH_LOGIN",
+      "refresh": "FILLED_BY_OAUTH_LOGIN",
+      "expires": 0
+    },
+    "ollama:local": {
+      "type": "api_key",
+      "provider": "ollama",
+      "apiKey": "ollama-local",
+      "key": "ollama-local"
+    }
+  }
+}
