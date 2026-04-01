@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "_comment": "Template cron jobs for OpenClaw. Copy to ~/.openclaw/cron/jobs.json and customize.",
+  "jobs": [
+    {
+      "id": "GENERATE-UUID-1",
+      "name": "nightly-retro",
+      "enabled": true,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 21 * * *",
+        "tz": "YOUR_TIMEZONE"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "You are doing your nightly retrospective.\n\nTASK: Review today's conversations and extract learnings from mistakes, corrections, pushbacks, or things that could have been done better.\n\nSTEPS:\n1. Look for: mistakes, corrections from users, things that took multiple attempts, wrong assumptions, inefficient workflows\n2. Classify each: coding / research / analysis / communication / operations / general\n3. Write entry with format: ### [DATE] Title, What happened, Root cause, Principle, Applies to, Severity\n4. Append to /workspace/learnings/{category}.md (Log section)\n5. If HIGH severity, also add to Principles (NEVER COMPACT) section\n6. Write daily summary to /workspace/learnings/daily/YYYY-MM-DD.md\n7. Telegram output: brief summary under 100 words\n\nRULES: Be honest. Don't fabricate. If clean day, say so.",
+        "model": "YOUR_MODEL",
+        "timeoutSeconds": 300,
+        "lightContext": true
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram",
+        "to": "YOUR_TELEGRAM_ID"
+      },
+      "state": {
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "GENERATE-UUID-2",
+      "name": "daily-digest",
+      "enabled": true,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 21 * * *",
+        "tz": "YOUR_TIMEZONE"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Read /workspace/status.json and format a concise daily digest: 1) System Health, 2) Auth Status, 3) Sessions, 4) Cron Jobs, 5) Errors. Use bold headers, bullet points. Under 300 words.",
+        "model": "YOUR_MODEL",
+        "timeoutSeconds": 180,
+        "lightContext": true
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram",
+        "to": "YOUR_TELEGRAM_ID"
+      },
+      "state": {
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "GENERATE-UUID-3",
+      "name": "weekly-log-compaction",
+      "enabled": true,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 18 * * 6",
+        "tz": "YOUR_TIMEZONE"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run weekly log compaction. Read all deep memory log files and learnings/*.md files. For any Log section exceeding 3000 words: extract principles to Principles section, summarize older entries, archive raw version. NEVER compact Principles sections. Report what was compacted.",
+        "model": "YOUR_MODEL",
+        "timeoutSeconds": 300
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "last"
+      },
+      "state": {
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "GENERATE-UUID-4",
+      "name": "weekly-protocol-promotion",
+      "enabled": true,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 19 * * 6",
+        "tz": "YOUR_TIMEZONE"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run weekly protocol promotion. Follow /workspace/protocols/weekly-protocol-promotion.md exactly. Read all learnings from this week, filter for promotion candidates (HIGH severity, recurring, applies-to-everyone), check against existing protocol rules, draft and append new rules. Report: learnings reviewed, promotions made, rule IDs. Under 150 words.",
+        "model": "YOUR_MODEL",
+        "thinking": "medium",
+        "timeoutSeconds": 600,
+        "lightContext": true
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram",
+        "to": "YOUR_TELEGRAM_ID"
+      },
+      "state": {
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "GENERATE-UUID-5",
+      "name": "weekly-auth-check",
+      "enabled": true,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * 1",
+        "tz": "YOUR_TIMEZONE"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Read /workspace/status.json. Check auth section. For each profile: report provider, type, status, error count, expiry. Warn if any profile has errors or expires within 72 hours.",
+        "model": "YOUR_MODEL",
+        "timeoutSeconds": 120,
+        "lightContext": true
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram",
+        "to": "YOUR_TELEGRAM_ID"
+      },
+      "state": {
+        "consecutiveErrors": 0
+      }
+    }
+  ]
+}
