@@ -10,3 +10,8 @@ Thumbs.db
 
 # Node
 node_modules/
+
+# Deployment helper scripts (hardcoded paths, not reusable)
+add_auth_profiles.py
+trim_agents.py
+update_*.py
